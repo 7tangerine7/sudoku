@@ -11,9 +11,16 @@ def delete_state(arr, n, i, j):  #
     return arr
 
 
-def assumption(arr, k):
-    arr = copy.deepcopy(arr)
-    return arr
+def assumption(arr, states, j):  # if -> solved, else -> continue find new one. return out of circle -> without answers
+    for i in range(9):
+        arr_try = copy.deepcopy(arr)
+        states_try = copy.deepcopy(states)
+        states_try[j] = np.zeros(9)
+        states_try[j][i] = 1
+        arr_try, states_try = csv(arr_try, states_try)
+        if check_solved(arr):
+            return arr_try, states_try
+    return arr_try, states_try
 
 
 def check_solved(arr):  # add check for deleting all elements
@@ -41,17 +48,11 @@ def csv(arr, states):  # add check for deleting all elements
     """
     arr, states = delete_state(arr, states)
 
-    if check_solved(arr):
-        return arr
-
-    elif check_undetermined(states):
+    if check_undetermined(states):
         j = 0
         while j < len(arr):
             if arr[j] == 0:
-                #arr_try = copy.deepcopy(arr)
-                #states_try = copy.deepcopy(states_try) this operation in assumption
                 arr, states = assumption(arr, states, j)  # return or have answer or doesn't have one
-                #arr_try, states_try = csv(arr_try, states_try)  # return right answers or answer doesn't exist
                 break
     return arr
 
