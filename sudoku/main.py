@@ -1,5 +1,4 @@
 import numpy as np
-import doctest
 import copy
 import codecs
 import os
@@ -62,13 +61,25 @@ def assumption(arr, states, j):  # if -> solved, else -> continue find new one. 
         states_try[j] = np.zeros(9)
         states_try[j][i] = 1
         arr_try, states_try = csv(arr_try, states_try)
-        if check_solved(arr):
+        if check_solved(arr_try):
             return arr_try, states_try
+        elif check_undetermined(states_try):
+            print("Undeterminate after jump!")
+
+
     return arr_try, states_try
 
 
 def check_solved(arr):  # add check for deleting all elements
-    if arr.all() != 0:
+    """
+    :param arr:
+    :return:
+    >>> check_solved(np.array([[0, 1], [1, 1]]))
+    False
+    >>> check_solved(np.array([[1, 1], [1, 1]]))
+    True
+    """
+    if np. all((arr != 0)):
         return True
     else:
         return False
@@ -121,8 +132,13 @@ def main():
             states[i][arr[i]-1] = 1
     arr, states = csv(arr, states)
     arr = np.reshape(arr, (9, 9))
-    print(arr)
+    if check_solved(arr):
+        print(arr)
+    else:
+        print("No answer!")
 
 
 if __name__ == '__main__':
+    import doctest
+    doctest.testmod()
     main()
