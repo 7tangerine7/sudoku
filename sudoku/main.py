@@ -6,11 +6,11 @@ import json
 
 
 def process_data(file):
-
     script_dir = os.path.dirname(__file__)
     file_path = os.path.join(script_dir, file)
-    obj = codecs.open(file_path, 'r', encoding='utf-8').read()
-    arr = np.array(json.loads(obj))
+    with open(file_path, 'r', encoding='utf-8') as data:
+        obj = json.load(data)
+        arr = np.array(obj)
     return arr
 
 
@@ -121,8 +121,7 @@ def csv(arr, states):  # add check for deleting all elements
 
 
 def main():
-    doctest.testmod()
-    file = 'sudoku_02.json'
+    file = '../sudoku_02.json'
     arr = process_data(file)
     arr = arr.flatten()
     states = np.ones((len(arr), 9))
