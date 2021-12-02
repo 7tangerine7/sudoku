@@ -3,6 +3,8 @@ import copy
 import os
 import json
 
+ac = 0
+
 
 def process_data(file):
     script_dir = os.path.dirname(__file__)
@@ -65,6 +67,9 @@ def assumption(arr, states, j):  # if -> solved, else -> continue find new one. 
             return arr_try, states_try
         elif check_undetermined(states_try):
             print("Undetermined after jump!")
+        else:
+            ac = 1
+
     return arr_try, states_try
 
 
@@ -120,7 +125,7 @@ def csv(arr, states):  # add check for deleting all elements
 
 
 def main():
-    file = '../sudoku_02.json'
+    file = '../test_3.json'
     arr = process_data(file)
     arr = arr.flatten()
     states = np.ones((len(arr), 9))
@@ -132,6 +137,8 @@ def main():
     arr = np.reshape(arr, (9, 9))
     if check_solved(arr):
         print(arr)
+    elif ac == 1:
+        print("no polymorphism")
     else:
         print("No answer!")
 
