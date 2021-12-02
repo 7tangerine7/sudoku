@@ -87,9 +87,9 @@ def check_undetermined(states):  # exite obj with no state -> yes
     """
     :param states:
     :return:
-    >> check_undetermined(np.array([[0, 0],[0, 0]]))
+    >>> check_undetermined(np.array([[0, 0],[0, 0]]))
     True
-    >>  check_undetermined(np.array([[0, 1],[0, 0]]))
+    >>>  check_undetermined(np.array([[0, 1],[0, 0]]))
     False
     """
     if (states.any(axis=1) == 0).any():

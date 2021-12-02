@@ -10,5 +10,4 @@ setup(
         "Operating System :: OS Independent",
     ],
     install_requires=["numpy >= 1.21.4"],
-
 )
