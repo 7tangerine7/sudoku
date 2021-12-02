@@ -9,5 +9,6 @@ setup(
         "Programming Language :: Python :: 3.10",
         "Operating System :: OS Independent",
     ],
-    install_requires=["numpy"],
+    install_requires=["numpy >= 1.21.4"],
+
 )

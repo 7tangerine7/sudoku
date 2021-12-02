@@ -35,7 +35,7 @@ def delete_state(arr, states):
     states_last = np.zeros((81, 9))
     rows = np.array([np.arange(a, a + 9) for a in range(0, 73, 9)])
     columns = np.array([np.arange(a, a + 73, 9) for a in range(0, 9)])
-    while not np.array_equal(states_last, states):  # не зупиняє, хоча масиви ідентичні
+    while not np.array_equal(states_last, states):
         states_last = copy.copy(states)
         for i in range(n):  # modify states
             if arr[i] != 0:
@@ -43,7 +43,7 @@ def delete_state(arr, states):
                     result = np.where(l == i)
                     num = result[0]  # idx of square
                     for k in l[num][l[num] != i]:
-                        states[k][arr[i] - 1] = 0  # find indexes of elements in same square and delete unneeded state
+                        states[k, arr[i] - 1] = 0  # find indexes of elements in same square and delete unneeded state
         for i in range(n):  # modify numbers
             if np.sum(states[i]) == 1:
                 idx = np.where(states[i] == 1)
@@ -52,8 +52,9 @@ def delete_state(arr, states):
 
 
 def assumption(arr, states, j):  # if -> solved, else -> continue find new one. return out of circle -> without answers
+    #print("t =", j)
     for i in range(9):
-        if states[j][i] == 0:
+        if states[j, i] == 0:
             continue
         arr_try = copy.deepcopy(arr)
         states_try = copy.deepcopy(states)
@@ -63,9 +64,7 @@ def assumption(arr, states, j):  # if -> solved, else -> continue find new one. 
         if check_solved(arr_try):
             return arr_try, states_try
         elif check_undetermined(states_try):
-            print("Undeterminate after jump!")
-
-
+            print("Undetermined after jump!")
     return arr_try, states_try
 
 
@@ -108,13 +107,14 @@ def csv(arr, states):  # add check for deleting all elements
 
     Find undetermined states. Return when answer exist or doesn't exist
     """
+    #print("ACE")
     arr, states = delete_state(arr, states)
 
     if check_undetermined(states):
         j = 0
         for j in range(len(arr)):
             if arr[j] == 0:
-                arr, states = assumption(arr, states, j)  # return or have answer or doesn't have one
+                arr, states = assumption(arr, states, j)  # return: have answer or doesn't have one
                 break
     return arr, states
 
@@ -127,7 +127,7 @@ def main():
     for i in range(len(arr)):
         if arr[i] != 0:
             states[i] = np.zeros(9)
-            states[i][arr[i]-1] = 1
+            states[i, arr[i]-1] = 1
     arr, states = csv(arr, states)
     arr = np.reshape(arr, (9, 9))
     if check_solved(arr):
