@@ -3,7 +3,6 @@ import copy
 import os
 import json
 
-ac = 0
 
 
 def process_data(file):
@@ -65,12 +64,12 @@ def assumption(arr, states, j):  # if -> solved, else -> continue find new one. 
         arr_try, states_try = csv(arr_try, states_try)
         if check_solved(arr_try):
             return arr_try, states_try
-        elif check_undetermined(states_try):
-            print("Undetermined after jump!")
-        else:
-            ac = 1
+        if check_undetermined(states_try):
+            return arr_try, states_try
 
-    return arr_try, states_try
+
+    return arr, states
+
 
 
 def check_solved(arr):  # add check for deleting all elements
@@ -93,14 +92,17 @@ def check_undetermined(states):  # exite obj with no state -> yes
     :param states:
     :return:
     >>> check_undetermined(np.array([[0, 0],[0, 0]]))
-    True
-    >>>  check_undetermined(np.array([[0, 1],[0, 0]]))
     False
+    >>> check_undetermined(np.array([[0, 1],[0, 0]]))
+    False
+
     """
-    if (states.any(axis=1) == 0).any():
-        return False
-    else:
+    unsolved = np.any(np.all((states == 0), axis=1))
+    #print(unsolved)
+    if np.any(sum(states.T) > 1, axis=0) and not unsolved:
         return True
+    else:
+        return False
 
 
 def csv(arr, states):  # add check for deleting all elements
@@ -112,7 +114,7 @@ def csv(arr, states):  # add check for deleting all elements
 
     Find undetermined states. Return when answer exist or doesn't exist
     """
-    #print("ACE")
+
     arr, states = delete_state(arr, states)
 
     if check_undetermined(states):
@@ -137,11 +139,13 @@ def main():
     arr = np.reshape(arr, (9, 9))
     if check_solved(arr):
         print(arr)
-    elif ac == 1:
+    elif check_undetermined(arr):
         print("no polymorphism")
     else:
         print("No answer!")
 
 
 if __name__ == '__main__':
+    import doctest
+    doctest.testmod()
     main()
