@@ -3,6 +3,7 @@ import copy
 import os
 import json
 
+ac = 0
 
 
 def process_data(file):
@@ -65,11 +66,10 @@ def assumption(arr, states, j):  # if -> solved, else -> continue find new one. 
         if check_solved(arr_try):
             return arr_try, states_try
         if check_undetermined(states_try):
+            global ac
+            ac = 1
             return arr_try, states_try
-
-
     return arr, states
-
 
 
 def check_solved(arr):  # add check for deleting all elements
@@ -127,7 +127,7 @@ def csv(arr, states):  # add check for deleting all elements
 
 
 def main():
-    file = '../sudoku_01.json'
+    file = '../sudoku_02.json'
     arr = process_data(file)
     arr = arr.flatten()
     states = np.ones((len(arr), 9))
@@ -139,13 +139,11 @@ def main():
     arr = np.reshape(arr, (9, 9))
     if check_solved(arr):
         print(arr)
-    elif check_undetermined(arr):
+    elif ac == 1:
         print("no polymorphism")
     else:
         print("No answer!")
 
 
 if __name__ == '__main__':
-    import doctest
-    doctest.testmod()
     main()
