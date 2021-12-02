@@ -127,7 +127,7 @@ def csv(arr, states):  # add check for deleting all elements
 
 
 def main():
-    file = '../test_3.json'
+    file = '../sudoku_01.json'
     arr = process_data(file)
     arr = arr.flatten()
     states = np.ones((len(arr), 9))
